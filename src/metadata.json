@@ -1,0 +1,15 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "WackyIdeas"
+            }
+        ],
+        "Category": "Appearance",
+        "Description": "Makes the cursor emit particle effects as the mouse moves",
+        "EnabledByDefault": false,
+        "License": "GPL-3.0+",
+        "Name": "Cursor Particles"
+    },
+    "X-KDE-ConfigModule": "kwin_particleeffect_config"
+}

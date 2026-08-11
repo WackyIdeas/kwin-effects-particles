@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/effects/particleeffect/shaders">
+  <file alias="shader.frag">../shaders/shader.frag</file>
+  <file alias="vertex.vert">../shaders/vertex.vert</file>
+</qresource>
+</RCC>
+

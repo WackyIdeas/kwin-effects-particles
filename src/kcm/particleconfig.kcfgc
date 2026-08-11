@@ -1,0 +1,6 @@
+File=particle.kcfg
+ClassName=ParticleConfig
+NameSpace=KWin
+Singleton=true
+Mutators=true
+TranslationSystem=kde
