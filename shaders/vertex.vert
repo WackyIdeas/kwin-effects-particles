@@ -1,4 +1,4 @@
-#version 330
+#version 140
 #extension GL_ARB_explicit_attrib_location : enable
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec4 vertex;
