@@ -215,7 +215,8 @@ void ParticleEmitter::respawnParticle(Particle &particle, QVector2D offset)
     double vy = (minSpeed + QRandomGenerator::global()->bounded(maxSpeed - minSpeed)) * sin(angle);
 
     particle.velocity = QVector2D(-vx, -vy);
-    particle.size = QRandomGenerator::global()->bounded(minSize, maxSize);
+    if(minSize == maxSize) particle.size = minSize;
+    else particle.size = QRandomGenerator::global()->bounded(minSize, maxSize);
 }
 
 
