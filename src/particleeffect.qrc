@@ -3,5 +3,8 @@
   <file alias="shader.frag">../shaders/shader.frag</file>
   <file alias="vertex.vert">../shaders/vertex.vert</file>
 </qresource>
+<qresource prefix="/">
+  <file alias="opengl/kwin-effects-particleeffect/brightnessadjust.frag">../shaders/brightnessadjust.frag</file>
+</qresource>
 </RCC>
 

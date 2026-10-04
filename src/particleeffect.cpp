@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#include "core/rendertarget.h"
 #include "particleeffect.h"
 #include "kcm/particle_config.h"
 #include "particleconfig.h"
@@ -111,7 +112,7 @@ bool ParticleShader::loadTexture(QString path)
 ParticleShader::ParticleShader()
 {
     m_shader = ShaderManager::instance()->generateShaderFromFile(
-        ShaderTrait::MapTexture,
+        ShaderTrait::MapTexture | ShaderTrait::TransformColorspace,
         QStringLiteral(":/effects/particleeffect/shaders/vertex.vert"),
         QStringLiteral(":/effects/particleeffect/shaders/shader.frag")
     );
@@ -263,7 +264,7 @@ void ParticleEmitter::init()
     glBindVertexArray(VAO_old);
 }
 
-void ParticleEmitter::draw(QMatrix4x4 mvp, ParticleShader &shader, const RenderViewport &viewport)
+void ParticleEmitter::draw(QMatrix4x4 mvp, ParticleShader &shader, const RenderViewport &viewport, const RenderTarget &renderTarget)
 {
     std::vector<QVector4D> instanceData;
     instanceData.reserve(amount * 2);
@@ -296,6 +297,10 @@ void ParticleEmitter::draw(QMatrix4x4 mvp, ParticleShader &shader, const RenderV
 
     auto pShader = shader.shader();
     ShaderManager::instance()->pushShader(pShader);
+    const auto toXYZ = renderTarget.colorDescription()->containerColorimetry().toXYZ();
+    pShader->setUniform(GLShader::Vec3Uniform::PrimaryBrightness, QVector3D(toXYZ(1, 0), toXYZ(1, 1), toXYZ(1, 2)));
+    pShader->setColorspaceUniforms(ColorDescription::sRGB, renderTarget.colorDescription(), RenderingIntent::Perceptual);
+
     pShader->setUniform(GLShader::Mat4Uniform::ModelViewProjectionMatrix, mvp);
     pShader->setUniform(shader.glUseTextureLocation(), shader.textureValid());
 
@@ -393,7 +398,7 @@ void ParticleEffect::prePaintScreen(ScreenPrePaintData &data)
 void ParticleEffect::paintScreen(const RenderTarget &renderTarget, const RenderViewport &viewport, int mask, const Region &region, LogicalOutput *screen)
 {
     effects->paintScreen(renderTarget, viewport, mask, region, screen);
-    m_emitter->draw(viewport.projectionMatrix(), m_particleShader, viewport);
+    m_emitter->draw(viewport.projectionMatrix(), m_particleShader, viewport, renderTarget);
 }
 
 void ParticleEffect::postPaintScreen()

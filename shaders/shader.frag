@@ -1,4 +1,5 @@
 #version 140
+#include "kwin-effects-particleeffect/brightnessadjust.frag"
 
 in vec2 uv;
 in vec4 particlecolor;
@@ -11,13 +12,14 @@ uniform bool useTexture;
 void main()
 {
     vec4 texCol = texture(sampler, uv);
-    fragColor = particlecolor;
+    vec4 result = particlecolor;
     if(useTexture)
     {
-        fragColor = texCol * particlecolor;
+        result = texCol * particlecolor;
     }
     else
     {
-        fragColor = particlecolor;
+        result = particlecolor;
     }
+    fragColor = adjustBrightness(result);
 }
